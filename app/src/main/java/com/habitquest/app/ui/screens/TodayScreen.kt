@@ -115,16 +115,10 @@ fun TodayScreen(vm: MainViewModel) {
         )
     }
 
-    if (vm.showAddDialog) {
-        AddHabitDialog(
-            onDismiss = { vm.setAddDialogVisible(false) },
-            onAdd = { title, emoji -> vm.addHabit(title, emoji); vm.setAddDialogVisible(false) }
-        )
-    }
 }
 
 @Composable
-private fun AddHabitDialog(onDismiss: () -> Unit, onAdd: (String, String) -> Unit) {
+internal fun AddHabitDialog(onDismiss: () -> Unit, onAdd: (String, String) -> Unit) {
     var title by remember { mutableStateOf("") }
     var emoji by remember { mutableStateOf("✅") }
     val emojis = listOf("✅", "🚿", "🚫", "💧", "😴", "🏃", "💪", "🥩", "✍️", "📵", "🧘", "📚")

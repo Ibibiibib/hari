@@ -17,30 +17,52 @@ fun AppRoot(vm: MainViewModel) {
                 NavigationBar {
                     val backStack by nav.currentBackStackEntryAsState()
                     val route = backStack?.destination?.route
-                    listOf("today" to "🔥 Сегодня", "stats" to "📊 Статистика", "levels" to "🎮 Уровни").forEach { (r, label) ->
+                    listOf(
+                        Triple("tracker", "📅", "Месяц"),
+                        Triple("today", "✅", "Сегодня"),
+                        Triple("stats", "📊", "Статистика"),
+                        Triple("levels", "🎮", "Уровни")
+                    ).forEach { (r, icon, label) ->
                         NavigationBarItem(
                             selected = route == r,
-                            onClick = { nav.navigate(r) { popUpTo("today") } },
-                            label = { Text(label) },
-                            icon = {}
+                            onClick = {
+                                nav.navigate(r) {
+                                    popUpTo("tracker")
+                                    launchSingleTop = true
+                                }
+                            },
+                            label = { Text(label, maxLines = 1) },
+                            icon = { Text(icon) }
                         )
                     }
                 }
             },
             floatingActionButton = {
                 val backStack by nav.currentBackStackEntryAsState()
-                if (backStack?.destination?.route == "today") {
+                val route = backStack?.destination?.route
+                if (route == "today" || route == "tracker") {
                     FloatingActionButton(onClick = { vm.setAddDialogVisible(true) }) {
                         Text("+", style = MaterialTheme.typography.headlineMedium)
                     }
                 }
             }
         ) { padding ->
-            NavHost(nav, startDestination = "today", modifier = Modifier.padding(padding)) {
+            NavHost(nav, startDestination = "tracker", modifier = Modifier.padding(padding)) {
+                composable("tracker") { TrackerScreen(vm) }
                 composable("today") { TodayScreen(vm) }
                 composable("stats") { StatsScreen(vm) }
                 composable("levels") { LevelsScreen(vm) }
             }
+        }
+
+        if (vm.showAddDialog) {
+            AddHabitDialog(
+                onDismiss = { vm.setAddDialogVisible(false) },
+                onAdd = { title, emoji ->
+                    vm.addHabit(title, emoji)
+                    vm.setAddDialogVisible(false)
+                }
+            )
         }
     }
 }

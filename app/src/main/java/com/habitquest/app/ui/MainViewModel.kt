@@ -16,6 +16,7 @@ import com.habitquest.app.widget.HabitWidget
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -33,7 +34,8 @@ data class UiState(
     val weekStats: List<DayStat> = emptyList(),
     val habitWeekStats: List<HabitWeekStat> = emptyList(),
     val xp: Int = 0,
-    val todayPercent: Int = 0
+    val todayPercent: Int = 0,
+    val checkSet: Set<String> = emptySet()   // "habitId|yyyy-MM-dd" — для экрана «Месяц»
 ) {
     val dateHeader: String
         get() = todayDate.format(DateTimeFormatter.ofPattern("d MMMM, EEEE", Locale("ru")))
@@ -45,6 +47,14 @@ class MainViewModel(app: Application, private val repo: HabitRepository) : Andro
         private set
 
     fun setAddDialogVisible(visible: Boolean) { showAddDialog = visible }
+
+    // Месяц, который показан на экране «Месяц» (только просмотр; отмечать можно лишь сегодня)
+    var viewMonth by androidx.compose.runtime.mutableStateOf(YearMonth.now())
+        private set
+
+    fun shiftMonth(delta: Long) { viewMonth = viewMonth.plusMonths(delta) }
+
+    fun goToCurrentMonth() { viewMonth = YearMonth.now() }
 
     val state: StateFlow<UiState> =
         combine(repo.habits, repo.checks, repo.streakState) { habits, checks, streakState ->
@@ -123,7 +133,8 @@ class MainViewModel(app: Application, private val repo: HabitRepository) : Andro
             weekStats = weekStats,
             habitWeekStats = habitWeekStats,
             xp = xp,
-            todayPercent = todayPercent
+            todayPercent = todayPercent,
+            checkSet = checkSet
         )
     }
 
