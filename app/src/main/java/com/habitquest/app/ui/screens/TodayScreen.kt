@@ -155,7 +155,7 @@ private fun AddHabitDialog(onDismiss: () -> Unit, onAdd: (String, String) -> Uni
     )
 }
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun FlowRowEmoji(emojis: List<String>, selected: String, onSelect: (String) -> Unit) {
     androidx.compose.foundation.layout.FlowRow(

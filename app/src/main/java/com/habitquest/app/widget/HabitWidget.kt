@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.*
 import androidx.glance.action.ActionParameters
+import androidx.glance.action.actionParametersOf
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.*
 import androidx.glance.appwidget.action.ActionCallback
@@ -64,10 +65,10 @@ private fun WidgetContent(habits: List<com.habitquest.app.data.Habit>, checked: 
                         .fillMaxWidth()
                         .padding(vertical = 3.dp)
                         .clickable(actionRunCallback<ToggleHabitAction>(
-                            parameters = ActionParameters.Builder()
-                                .put(ToggleHabitAction.KEY_HABIT_ID, habit.id)
-                                .put(ToggleHabitAction.KEY_CHECKED, isChecked)
-                                .build()
+                            parameters = actionParametersOf(
+                                ToggleHabitAction.KEY_HABIT_ID to habit.id,
+                                ToggleHabitAction.KEY_CHECKED to isChecked
+                            )
                         )),
                     verticalAlignment = Alignment.CenterVertically
                 ) {

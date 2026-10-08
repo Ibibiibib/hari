@@ -1,6 +1,9 @@
 package com.habitquest.app.ui
 
 import android.app.Application
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.glance.appwidget.updateAll
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.habitquest.app.data.Habit
@@ -127,7 +130,7 @@ class MainViewModel(app: Application, private val repo: HabitRepository) : Andro
     fun toggle(habitId: Long, checked: Boolean) {
         viewModelScope.launch {
             repo.toggleToday(habitId, checked)
-            HabitWidget().updateAll(getApplication())
+            HabitWidget().updateAll(getApplication<Application>())
         }
     }
 
@@ -135,14 +138,14 @@ class MainViewModel(app: Application, private val repo: HabitRepository) : Andro
         if (title.isBlank()) return
         viewModelScope.launch {
             repo.addHabit(title, emoji)
-            HabitWidget().updateAll(getApplication())
+            HabitWidget().updateAll(getApplication<Application>())
         }
     }
 
     fun deleteHabit(habit: Habit) {
         viewModelScope.launch {
             repo.deleteHabit(habit)
-            HabitWidget().updateAll(getApplication())
+            HabitWidget().updateAll(getApplication<Application>())
         }
     }
 

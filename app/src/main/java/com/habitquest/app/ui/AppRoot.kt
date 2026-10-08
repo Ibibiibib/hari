@@ -6,6 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.*
 import com.habitquest.app.ui.screens.*
+import com.habitquest.app.ui.theme.HabitQuestTheme
 
 @Composable
 fun AppRoot(vm: MainViewModel) {
