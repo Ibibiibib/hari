@@ -71,8 +71,7 @@ fun TodayScreen(vm: MainViewModel) {
         if (state.habits.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(
-                    "Привычек пока нет.
-Нажми + и добавь первую.",
+                    "Привычек пока нет.\nНажми + и добавь первую.",
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
